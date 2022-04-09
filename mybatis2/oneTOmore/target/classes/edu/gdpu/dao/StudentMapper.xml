@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.gdpu.dao.StudentMapper">
+    <select id="queryStudentById" resultMap="queryStudentById">
+        select s.id, s.name, s.age, p.parent_role,p.parent_phone
+        from student s,
+             parent p
+        where s.id = p.stu_id
+          and s.id = #{id}
+    </select>
+    <resultMap id="queryStudentById" type="student">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="age" column="age"/>
+        <collection property="parents" ofType="parent">
+            <id property="role" column="parent_role"/>
+            <result property="phone" column="parent_phone"/>
+        </collection>
+    </resultMap>
+</mapper>
