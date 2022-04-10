@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.gdpu.dao.StudentDao">
+    <insert id="addStudent">
+        insert into student
+        values (#{param1.id}, #{param1.name}, #{param1.age}, #{param2})
+    </insert>
+
+    <select id="queryStudent1" resultMap="queryStudent1">
+        select s.*, c.class_name
+        from student s,
+             class c
+        where s.id = #{id}
+          and s.class_id = c.class_id
+    </select>
+    <resultMap id="queryStudent1" type="student">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="age" column="age"/>
+        <association property="aClass" javaType="class">
+            <id property="id" column="class_id"/>
+            <result property="name" column="class_name"/>
+        </association>
+    </resultMap>
+
+    <select id="queryStudent2" resultMap="queryStudent2">
+        select s.id, s.name, c.course_name, c.grade
+        from student s,
+             grade c
+        where s.id = c.stu_id
+    </select>
+    <resultMap id="queryStudent2" type="student">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <collection property="grades" ofType="grade">
+            <id property="course_name" column="course_name"/>
+            <result property="grade" column="grade"/>
+        </collection>
+    </resultMap>
+</mapper>

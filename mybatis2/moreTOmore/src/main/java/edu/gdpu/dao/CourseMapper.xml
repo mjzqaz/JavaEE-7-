@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.gdpu.dao.CourseMapper">
+    <select id="queryCourseByName" resultMap="queryCourseByName">
+        select c.course_id, c.course_name, s.id, s.name, s.age
+        from student s,
+             course c,
+             course_student p
+        where s.id = p.stu_id
+          and p.course_id = c.course_id
+          and c.course_name = #{name}
+    </select>
+    <resultMap id="queryCourseByName" type="course">
+        <id column="course_id" property="id"/>
+        <result column="course_name" property="name"/>
+        <collection property="students" ofType="student">
+            <id column="id" property="id"/>
+            <result column="name" property="name"/>
+            <result column="age" property="age"/>
+        </collection>
+    </resultMap>
+
+</mapper>
